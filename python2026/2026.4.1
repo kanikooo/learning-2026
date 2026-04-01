@@ -1,1 +1,57 @@
+def calculate_bmi(height, weight, unit='m'):
+    """
+    计算 BMI 值
+    :param height: 身高数值
+    :param weight: 体重数值（kg）
+    :param unit: 身高单位，'m' 表示米，'cm' 表示厘米
+    :return: BMI 值
+    """
+    if unit == 'cm':
+        height = height / 100  # 将厘米转换为米
+    elif unit != 'm':
+        raise ValueError("单位必须是 'm' 或 'cm'")
 
+    if height <= 0 or weight <= 0:
+        raise ValueError("身高和体重必须为正数")
+
+    bmi = weight / (height ** 2)
+    return bmi
+
+def interpret_bmi(bmi):
+    """
+    根据 BMI 值返回分类
+    """
+    if bmi < 18.5:
+        return "体重过轻"
+    elif 18.5 <= bmi < 25:
+        return "正常范围"
+    elif 25 <= bmi < 30:
+        return "超重"
+    else:
+        return "肥胖"
+
+def main():
+    print("=== BMI 计算器 ===")
+    try:
+        # 输入身高
+        height_input = input("请输入身高（例如 1.75 或 175）: ")
+        # 判断是米还是厘米（简单判断：若包含小数点且小于3，或大于3，或数字判断）
+        # 更稳健的方法：让用户选择单位
+        unit = input("身高单位是米(m)还是厘米(cm)？请输入 m 或 cm: ").strip().lower()
+        height = float(height_input)
+
+        weight = float(input("请输入体重（千克）: "))
+
+        bmi = calculate_bmi(height, weight, unit)
+        category = interpret_bmi(bmi)
+
+        print(f"\n您的 BMI 值为: {bmi:.2f}")
+        print(f"体重状况: {category}")
+
+    except ValueError as e:
+        print(f"输入错误: {e}")
+    except Exception as e:
+        print(f"发生未知错误: {e}")
+
+if __name__ == "__main__":
+    main()
